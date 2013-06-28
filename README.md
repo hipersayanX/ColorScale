@@ -19,7 +19,7 @@ Examples
                   [225, 127,   0],
                   [255, 255, 255]]
 
-<center><img src="https://github.com/hipersayanX/ColorScale/blob/master/images/src/middle-orange.png" alt="Replacing the grey color by orange" style="width: 640px; height: 480px" /></center>
+<center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/middle-orange.png" alt="Replacing the grey color by orange" style="width: 640px; height: 480px" /></center>
 
     # Rainbow
     colorTable = [[255,   0, 255],
@@ -29,7 +29,7 @@ Examples
                   [255, 255,   0],
                   [255,   0,   0]]
 
-<center><img src="https://github.com/hipersayanX/ColorScale/blob/master/images/src/rainboy.png" alt="Rainbow gradient example" style="width: 640px; height: 480px" /></center>
+<center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/rainbow.png" alt="Rainbow gradient example" style="width: 640px; height: 480px" /></center>
 
     # Hot colors.
     colorTable = [[  0,   0,   0],
@@ -37,13 +37,13 @@ Examples
                   [255, 255,   0],
                   [255, 255, 255]]
 
-<center><img src="https://github.com/hipersayanX/ColorScale/blob/master/images/src/hot-colors.png" alt="Using a red-yellow color palette" style="width: 640px; height: 480px" /></center>
+<center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/hot-colors.png" alt="Using a red-yellow color palette" style="width: 640px; height: 480px" /></center>
 
     # Soft colors
     colorTable = [[127,   0, 127],
                   [255, 191, 255]]
 
-<center><img src="https://github.com/hipersayanX/ColorScale/blob/master/images/src/soft-colors.png" alt="Replace the outermost colors by a contrastless colors" style="width: 640px; height: 480px" /></center>
+<center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/soft-colors.png" alt="Replace the outermost colors by a contrastless colors" style="width: 640px; height: 480px" /></center>
 
     # Printing blue
     colorTable = [[  0,   0,   0],
@@ -53,7 +53,7 @@ Examples
                   [127, 191, 255],
                   [127, 191, 255]]
 
-<center><img src="https://github.com/hipersayanX/ColorScale/blob/master/images/src/printing-blue.png" alt="Extending outermost and middle colors" style="width: 640px; height: 480px" /></center>
+<center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/printing-blue.png" alt="Extending outermost and middle colors" style="width: 640px; height: 480px" /></center>
 
     # Wrong luminance sorting
     colorTable = [[  0,   0,   0],
@@ -61,9 +61,9 @@ Examples
                   [  0,   0, 255],
                   [255, 255, 255]]
 
-<center><img src="https://github.com/hipersayanX/ColorScale/blob/master/images/src/wrong-luma-sort.png" alt="Switching the color luminance in wrong order" style="width: 640px; height: 480px" /></center>
-<center><img src="https://github.com/hipersayanX/ColorScale/blob/master/images/src/color-reconstruction.png" alt="Color recontruction" style="width: 640px; height: 480px" /></center>
-<center><img src="https://github.com/hipersayanX/ColorScale/blob/master/images/src/wrong-color-reconstruction.png" alt="Wrong color recontruction" style="width: 640px; height: 480px" /></center>
+<center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/wrong-luma-sort.png" alt="Switching the color luminance in wrong order" style="width: 640px; height: 480px" /></center>
+<center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/color-reconstruction.png" alt="Color recontruction" style="width: 640px; height: 480px" /></center>
+<center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/wrong-color-reconstruction.png" alt="Wrong color recontruction" style="width: 640px; height: 480px" /></center>
 
 Content attribution
 ===================
