@@ -24,55 +24,77 @@ import os, sys
 
 from PyQt4 import QtCore, QtGui
 
+def calculateSector(color=0, nColors=0):
+    diff = 256 / (nColors - 1)
+
+    return int(color / diff)
+
+def calculateGreyLimits(color=0, nColors=0):
+    diff = 255 / (nColors - 1)
+    sector = calculateSector(color, nColors)
+
+    lower = int(diff * sector)
+    upper = int(diff * (sector + 1))
+
+    return (lower, upper)
+
+def calculateColorLimits(colorTable=[], sector=0):
+    lower = colorTable[sector]
+    upper = colorTable[sector + 1]
+
+    return (lower, upper)
+
+def calcualateFactor(color=0, lower=0, upper=0):
+    return (color - lower) / (upper - lower)
+
+def calculateColor(k=0, lower=[], upper=[]):
+    color = []
+
+    for i in range(len(lower)):
+        color.append(int(k * (upper[i] - lower[i]) + lower[i]))
+
+    return color
+
+def transformColor(colorTable=[], color=0):
+    lower, upper = calculateGreyLimits(color, len(colorTable))
+    k = calcualateFactor(color, lower, upper)
+    sector = calculateSector(color, len(colorTable))
+    lowerColor, upperColor = calculateColorLimits(colorTable, sector)
+
+    return calculateColor(k, lowerColor, upperColor)
+
 def createTransformTable(colorTable=[]):
-    j = 0
-    diff = 255 / (len(colorTable) - 1)
-    lower = 0
-    upper = round(diff)
     transformTable = []
 
     for i in range(256):
-        if lower == upper:
-            colorTransform = colorTable[len(colorTable) - 1]
-        else:
-            k = (i - lower) / (upper - lower)
-
-            colorDiff = [colorTable[j + 1][0] - colorTable[j][0],
-                        colorTable[j + 1][1] - colorTable[j][1],
-                        colorTable[j + 1][2] - colorTable[j][2]]
-
-            colorTransform = [int(k * colorDiff[0] + colorTable[j][0]),
-                            int(k * colorDiff[1] + colorTable[j][1]),
-                            int(k * colorDiff[2] + colorTable[j][2])]
-
-        transformTable += [colorTransform]
-
-        if i + 1 >= upper:
-            lower = upper
-            upper = round((j + 2) * diff)
-            upper = 255 if upper > 255 else upper
-            j += 1
+        transformTable.append(transformColor(colorTable, i))
 
     return transformTable
 
 def sortByLuma(colorTable=[]):
-    lumaMap = {}
+    # colorTable = [int0, int1, int2, ..., intN]
+    lumaTable = []
 
+    # lumaTable = [[luma0, int0],
+    #              [luma1, int1],
+    #              [luma2, int2],
+    #                   ...     ,
+    #              [lumaN, intN]]
     for color in colorTable:
         r = color & 0xff
         g = (color >> 8) & 0xff
         b = (color >> 16) & 0xff
-        lumaMap[color] = (r + g + b) / 3
-
-    lumaTable = []
-
-    for color in lumaMap:
-        lumaTable.append([lumaMap[color], color])
+        lumaTable.append([(r + g + b) / 3, color])
 
     lumaTable.sort()
 
     sortedColorTable = []
 
+    # lumaTable = [[r0, g0, b0],
+    #              [r1, g1, b1],
+    #              [r2, g2, b2],
+    #                   ...     ,
+    #              [rN, gN, bN]]
     for i in range(len(lumaTable)):
         color = lumaTable[i][1]
         sortedColorTable.append([(color >> 16) & 0xff,
@@ -86,8 +108,11 @@ def createColorTable(image=None, nColors=256):
 
     for y in range(image.height()):
         for x in range(image.width()):
+            # Get a new pixel
             pixel = image.pixel(x, y)
 
+            # Calculate the number of times that this
+            # color has been used in the image
             if pixel in mostUsed:
                 mostUsed[pixel] += 1
             else:
@@ -95,10 +120,13 @@ def createColorTable(image=None, nColors=256):
 
     mostUsedTable = []
 
+    # Sort colors by usage.
     for color in mostUsed:
         mostUsedTable.append([mostUsed[color], color])
 
     mostUsedTable.sort()
+
+    # Cut it to show only the nColors most used colors or less.
     mostUsedTable.reverse()
 
     usedColors = min(len(mostUsedTable), nColors)
@@ -107,6 +135,7 @@ def createColorTable(image=None, nColors=256):
     for i in range(usedColors):
         colorTable.append(mostUsedTable[i][1])
 
+    # Returns the colors sorted by luminance.
     return sortByLuma(colorTable)
 
 
@@ -118,7 +147,7 @@ if __name__ == "__main__":
                   #[225, 127,   0],
                   #[255, 255, 255]]
 
-    Rainbow
+    # Rainbow
     colorTable = [[255,   0, 255],
                   [  0,   0, 255],
                   [  0, 255, 255],
@@ -151,7 +180,7 @@ if __name__ == "__main__":
                   #[255, 255, 255]]
 
     size = QtCore.QSize(800, 600)
-    image = QtGui.QImage('someimage.jpg')
+    image = QtGui.QImage('/home/hipersayan_x/Imagenes/varios/ecchi_halloween.jpg')
     image = image.scaled(size, QtCore.Qt.KeepAspectRatio)
 
     #colorTable = createColorTable(image, 256)
@@ -159,12 +188,16 @@ if __name__ == "__main__":
 
     for y in range(image.height()):
         for x in range(image.width()):
+            # Get a pixel from the image.
             pixel = image.pixel(x, y)
             r = pixel & 0xff
             g = (pixel >> 8) & 0xff
             b = (pixel >> 16) & 0xff
+
+            # Calculate the color luminance
             color = round((r + g + b) / 3.0)
 
+            # and transform it to the new color.
             newColor = transformTable[color][0] << 16 | \
                        transformTable[color][1] << 8 | \
                        transformTable[color][2]
