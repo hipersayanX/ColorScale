@@ -1,7 +1,7 @@
 ColorScale
 ==========
 
-Color scale algorithm and B&amp;W image coloring
+Color scale algorithm and B&amp;W image coloring.
 
 Description
 ===========
@@ -39,10 +39,10 @@ The ecuations for the linear transform are:
     G = k * (getUpperColor(GreyTable, sector) - getLowerColor(GreyTable, sector)) + getLowerColor(GreyTable, sector)
     C = k * (ColorTable[sector + 1] - ColorTable[sector]) + ColorTable[sector]
 
-
-
 Examples
 ========
+
+Here you can see some simple color transforms.
 
     # Replace the grey color by orange.
     colorTable = [[  0,   0,   0],
@@ -96,7 +96,33 @@ Examples
 Color reconstruction
 ====================
 
-<center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/color-reconstruction.png" alt="Color recontruction" style="width: 640px; height: 480px" /></center>
+The idea is very simple, as said before, each color has a luminance value, the luminance value isn't a unique value, many colors shares the same luminance value, but in some cases when you see a black and white picture you can guess what is the original color of an object depending on his luminance and the context of the scene.  
+So, the first step before you can recolor a B&amp;W image is to split the grey scale palette into a few characteristic colors.
+
+    colorTable = [[  0,   0,   0],
+                  [255,   0, 255],
+                  [  0, 255, 255],
+                  [255,   0,   0],
+                  [255, 255,   0],
+                  [255, 255, 255]]
+
+<center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/colorsplit.png" alt="Color split" style="width: 640px; height: 480px" /></center>
+
+And then, replace every color by it's supposed original color.
+
+    colorTable = [[  0,   0,   0],
+                  [ 63,  47,  31],
+                  [ 95, 159, 255],
+                  [127, 191, 255],
+                  [223, 223, 223],
+                  [255, 255, 255]]
+
+<center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/recoloring.png" alt="Manual color recontruction" style="width: 640px; height: 480px" /></center>
+
+It's also possible to automatically reconstruct the original colors if you have the original color palette. 
+
+<center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/color-reconstruction.png" alt="Automatic color recontruction" style="width: 640px; height: 480px" /></center>
+
 <center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/wrong-color-reconstruction.png" alt="Wrong color recontruction" style="width: 640px; height: 480px" /></center>
 
 Content attribution
@@ -108,5 +134,6 @@ Content attribution
 [4](http://www.flickr.com/photos/osakajock/230790571/ "Geisha")
 [5](http://www.flickr.com/photos/demawo/6010502526/ "A small shrine (若宮八幡社) in Toyota south, Aichi, Japan (HDR)... JTM Photo No.69")
 [6](http://www.flickr.com/photos/gonmi/6195695770/ "Japan, 2011")
-[7](http://www.flickr.com/photos/moriyoshi/5165504/ "Tokyo tower.")
-[8](http://www.flickr.com/photos/70626035@N00/7106560853/ "Sakura * Prunus serrulata")
+[7](http://www.flickr.com/photos/stevier/3171901675/ "Stew Bento Lunch - Stevie")
+[8](http://www.flickr.com/photos/moriyoshi/5165504/ "Tokyo tower.")
+[9](http://www.flickr.com/photos/70626035@N00/7106560853/ "Sakura * Prunus serrulata")

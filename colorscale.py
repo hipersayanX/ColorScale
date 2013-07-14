@@ -71,39 +71,7 @@ def createTransformTable(colorTable=[]):
 
     return transformTable
 
-def sortByLuma(colorTable=[]):
-    # colorTable = [int0, int1, int2, ..., intN]
-    lumaTable = []
-
-    # lumaTable = [[luma0, int0],
-    #              [luma1, int1],
-    #              [luma2, int2],
-    #                   ...     ,
-    #              [lumaN, intN]]
-    for color in colorTable:
-        r = color & 0xff
-        g = (color >> 8) & 0xff
-        b = (color >> 16) & 0xff
-        lumaTable.append([(r + g + b) / 3, color])
-
-    lumaTable.sort()
-
-    sortedColorTable = []
-
-    # lumaTable = [[r0, g0, b0],
-    #              [r1, g1, b1],
-    #              [r2, g2, b2],
-    #                   ...     ,
-    #              [rN, gN, bN]]
-    for i in range(len(lumaTable)):
-        color = lumaTable[i][1]
-        sortedColorTable.append([(color >> 16) & 0xff,
-                                 (color >> 8) & 0xff,
-                                 color & 0xff])
-
-    return sortedColorTable
-
-def createColorTable(image=None, nColors=256):
+def createColorTable(image=None):
     mostUsed = {}
 
     for y in range(image.height()):
@@ -122,21 +90,34 @@ def createColorTable(image=None, nColors=256):
 
     # Sort colors by usage.
     for color in mostUsed:
-        mostUsedTable.append([mostUsed[color], color])
+        r = color & 0xff
+        g = (color >> 8) & 0xff
+        b = (color >> 16) & 0xff
+        luma = (r + g + b) / 3
+        mostUsedTable.append([luma, mostUsed[color], color])
 
     mostUsedTable.sort()
-
-    # Cut it to show only the nColors most used colors or less.
     mostUsedTable.reverse()
 
-    usedColors = min(len(mostUsedTable), nColors)
     colorTable = []
+    curLuma = 0
 
-    for i in range(usedColors):
-        colorTable.append(mostUsedTable[i][1])
+    for i in range(len(mostUsedTable)):
+        luma = round(mostUsedTable[i][0])
 
-    # Returns the colors sorted by luminance.
-    return sortByLuma(colorTable)
+        if i == 0 or luma != curLuma:
+            curLuma = luma
+        else:
+            continue
+
+        color = mostUsedTable[i][2]
+        colorTable.append([(color >> 16) & 0xff,
+                           (color >> 8) & 0xff,
+                           color & 0xff])
+
+    colorTable.reverse()
+
+    return colorTable
 
 
 if __name__ == "__main__":
@@ -148,12 +129,12 @@ if __name__ == "__main__":
                   #[255, 255, 255]]
 
     # Rainbow
-    colorTable = [[255,   0, 255],
-                  [  0,   0, 255],
-                  [  0, 255, 255],
-                  [  0, 255,   0],
-                  [255, 255,   0],
-                  [255,   0,   0]]
+    #colorTable = [[255,   0, 255],
+                  #[  0,   0, 255],
+                  #[  0, 255, 255],
+                  #[  0, 255,   0],
+                  #[255, 255,   0],
+                  #[255,   0,   0]]
 
     # Hot colors.
     #colorTable = [[  0,   0,   0],
@@ -179,11 +160,21 @@ if __name__ == "__main__":
                   #[  0,   0, 255],
                   #[255, 255, 255]]
 
+    # Hope
+    colorTable = [[  0,  50,  77],
+                  [  0,  50,  77],
+                  [113, 150, 159],
+                  [113, 150, 159],
+                  [252, 228, 168],
+                  [252, 228, 168],
+                  [215,  26,  33],
+                  [215,  26,  33]]
+
     size = QtCore.QSize(800, 600)
-    image = QtGui.QImage('/home/hipersayan_x/Imagenes/varios/ecchi_halloween.jpg')
+    image = QtGui.QImage('someimage.jpg')
     image = image.scaled(size, QtCore.Qt.KeepAspectRatio)
 
-    #colorTable = createColorTable(image, 256)
+#    colorTable = createColorTable(image)
     transformTable = createTransformTable(colorTable)
 
     for y in range(image.height()):
