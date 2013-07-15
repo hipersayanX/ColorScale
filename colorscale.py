@@ -71,7 +71,18 @@ def createTransformTable(colorTable=[]):
 
     return transformTable
 
-def createColorTable(image=None):
+def cutColors(colorTable=[], nColors=256):
+    newColorTable = []
+    a = len(colorTable) - 1
+    b = nColors - 1
+
+    for i in range(nColors):
+        j = int(i * a / b)
+        newColorTable.append(colorTable[j])
+
+    return newColorTable
+
+def createColorTable(image=None, nColors=256):
     mostUsed = {}
 
     for y in range(image.height()):
@@ -116,8 +127,23 @@ def createColorTable(image=None):
                            color & 0xff])
 
     colorTable.reverse()
+    newColorTable = []
+    j = 0
 
-    return colorTable
+    for i in range(256):
+        if j < len(colorTable):
+            color = colorTable[j]
+            luma = int((colorTable[j][0] + colorTable[j][1] + colorTable[j][2]) / 3)
+
+            if i == luma:
+                newColorTable.append(colorTable[j])
+                j += 1
+            else:
+                newColorTable.append(3 * [i])
+        else:
+            newColorTable.append(3 * [i])
+
+    return cutColors(newColorTable, nColors)
 
 
 if __name__ == "__main__":
@@ -174,7 +200,7 @@ if __name__ == "__main__":
     image = QtGui.QImage('someimage.jpg')
     image = image.scaled(size, QtCore.Qt.KeepAspectRatio)
 
-#    colorTable = createColorTable(image)
+#    colorTable = createColorTable(image, 256)
     transformTable = createTransformTable(colorTable)
 
     for y in range(image.height()):

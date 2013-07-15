@@ -101,9 +101,11 @@ So, the first step before you can recolor a B&amp;W image is to split the grey s
 
     colorTable = [[  0,   0,   0],
                   [255,   0, 255],
+                  [  0,   0, 255],
                   [  0, 255, 255],
-                  [255,   0,   0],
+                  [  0, 255,   0],
                   [255, 255,   0],
+                  [255,   0,   0],
                   [255, 255, 255]]
 
 <center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/colorsplit.png" alt="Color split" style="width: 640px; height: 480px" /></center>
@@ -111,10 +113,12 @@ So, the first step before you can recolor a B&amp;W image is to split the grey s
 And then, replace every color by it's supposed original color.
 
     colorTable = [[  0,   0,   0],
-                  [ 63,  47,  31],
-                  [ 95, 159, 255],
-                  [127, 191, 255],
-                  [223, 223, 223],
+                  [ 40,  36,  33],
+                  [ 41,  71, 105],
+                  [ 69, 108, 151],
+                  [ 92, 145, 199],
+                  [171, 195, 181],
+                  [209, 226, 220],
                   [255, 255, 255]]
 
 <center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/recoloring.png" alt="Manual color recontruction" style="width: 640px; height: 480px" /></center>
