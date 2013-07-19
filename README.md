@@ -6,8 +6,6 @@ Color scale algorithm and B&amp;W image coloring.
 Description
 ===========
 
-_(Draft)_
-
 The algorithm consists in dividing a gray scale by sectors, replace every sector by a new color gradient, and then converting a gray scale image to the new scale. The user defines the contol points by it's colors, and the algorithm redistribute to control points arround the grey scale. The grey scale is divided in nControlPoints - 1.  
 Also, this algorithm can be used for reconstructing the color of a grey scaled image by using it's most representative colors.
 
@@ -123,11 +121,21 @@ And then, replace every color by it's supposed original color.
 
 <center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/recoloring.png" alt="Manual color recontruction" style="width: 640px; height: 480px" /></center>
 
-It's also possible to automatically reconstruct the original colors if you have the original color palette. 
+It's also possible to automatically reconstruct the original colors if you have the original color palette.  
+The _createColorTable(image, nColors)_ function will create a color table with each color available in _image_ sorted by luminance and usage, then will reduce the number of colors to the most used colors without repeating the luminance value. If a luminance value is missing this will be filled whith a grey value with the same luminance.  
+The number of colors in this palette will be the number of grey tones in the image color depth, ie. in a RGB888 image the numbre of colors will be 256.  
+Finally, this number of colors will be reduced to nColors, where each color is ditributed uniformly.
 
 <center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/color-reconstruction.png" alt="Automatic color recontruction" style="width: 640px; height: 480px" /></center>
 
+The algorithm not always works as expect. If there are two or more colors with the same luminance and one of those prevails over the others, that color will hide the original tone.
+
 <center><img src="https://raw.github.com/hipersayanX/ColorScale/master/images/wrong-color-reconstruction.png" alt="Wrong color recontruction" style="width: 640px; height: 480px" /></center>
+
+Questions?
+==========
+
+Just check out the source code, this is more understandable than my explanation :P
 
 Content attribution
 ===================

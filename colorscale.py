@@ -77,7 +77,7 @@ def cutColors(colorTable=[], nColors=256):
     b = nColors - 1
 
     for i in range(nColors):
-        j = int(i * a / b)
+        j = round(i * a / b)
         newColorTable.append(colorTable[j])
 
     return newColorTable
@@ -133,7 +133,7 @@ def createColorTable(image=None, nColors=256):
     for i in range(256):
         if j < len(colorTable):
             color = colorTable[j]
-            luma = int((colorTable[j][0] + colorTable[j][1] + colorTable[j][2]) / 3)
+            luma = round((colorTable[j][0] + colorTable[j][1] + colorTable[j][2]) / 3)
 
             if i == luma:
                 newColorTable.append(colorTable[j])
